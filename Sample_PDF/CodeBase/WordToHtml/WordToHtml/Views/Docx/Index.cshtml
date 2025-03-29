@@ -1,0 +1,159 @@
+﻿@model WordToHtml.Models.WordToHtmlModel
+
+@{
+    Layout = null;
+}
+
+<!-- Bootstrap CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+<!-- Summernote CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
+
+<style>
+    #summernote {
+        width: 100%;
+        height: 500px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin: 0 auto;
+    }
+
+    /* .container {
+                    max-width: 800px;
+                } */
+</style>
+
+<div class="container-fluid mt-4">
+    <h1>Documents</h1>
+
+    @if (TempData["msg"] != null)
+    {
+        <div class="alert alert-info">
+            @TempData["msg"]
+        </div>
+    }
+
+    @if (TempData["dlt_msg"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["dlt_msg"]
+        </div>
+    }
+
+    <div class="row container-fluid">
+
+        <div class="col-sm-8">
+            <div class="card">
+                <div class="card-header">
+                    Add/Edit Document
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("Index", "Docx", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+
+
+                        <div class="form-group">
+                            <label for="file">Select DOCX File:</label>
+                            <input type="file" class="form-control-file" id="file" name="file" accept=".docx">
+                        </div>
+
+                        <button type="submit" name="Command" value="AddNew" class="btn btn-primary">Upload</button>
+
+                        <br>
+
+                        <hr />
+
+                        <br>
+
+                        @if (Model.Id != null && Model.Id > 0)
+                        {
+                            <h2>Edit Document</h2>
+                            @Html.HiddenFor(m => m.Id)
+                            @Html.TextAreaFor(m => m.HtmlContent, new { @id = "summernote" })
+                            @* <input type="hidden" id="Id" />
+                    <textarea id="summernote" id="HtmlContent"></textarea> *@
+                            <center><button type="submit" name="Command" value="EditSave" class="btn btn-primary mt-3">Save</button></center>
+                            @* <button type="submit" class="btn btn-primary mt-3">Download PDF</button> *@
+                            <hr />
+                        }
+
+                    }
+
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-header">
+                    Manage Document
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("Index", "Docx", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @if (ViewBag.documents.Count > 0)
+                        {
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>File Name</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var doc in ViewBag.documents)
+                                    {
+                                        <tr>
+                                            <td>@doc.Id</td>
+                                            <td>@doc.Name</td>
+                                            <td>
+                                                <input type="hidden" name="id" value="@doc.Id" />
+
+                                                <a href="~/Docx/Index?Id=@doc.Id&Command=Edit" class="btn btn-primary">Edit</a>
+                                                @*  name="Command" value="Edit"  type="submit" *@
+                                                <a href="~/Home/ViewDocument?id=@doc.Id" class="btn btn-secondary">View</a>
+                                                <button type="submit" class="btn btn-danger" name="Command" value="Delete" onclick="return confirm('Are you sure you want to delete this document?')">Delete</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <p>No documents available yet.</p>
+                        }
+                    }
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <center>
+        <div class="mt-4">
+            <a href="~/Docx/Index" class="btn btn-primary">Clear</a>
+        </div>
+    </center>
+
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <!-- Summernote JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+
+    <script>
+        //$(document).ready(function () {
+        $('#summernote').summernote({
+            height: 500,
+            tabsize: 2
+        });
+        // });
+    </script>

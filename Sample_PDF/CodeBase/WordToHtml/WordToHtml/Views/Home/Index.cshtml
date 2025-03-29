@@ -1,0 +1,55 @@
+﻿@model List<WordToHtml.Models.WordToHtmlModel>
+
+<h1>Documents</h1>
+
+@if (TempData["msg"] != null)
+{
+    <div class="alert alert-info">
+        @TempData["msg"]
+    </div>
+}
+
+@if (TempData["dlt_msg"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["dlt_msg"]
+    </div>
+}
+
+@if (Model.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>File Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var doc in Model)
+            {
+                <tr>
+                    <td>@doc.Id</td>
+                    <td>@doc.Name</td>
+                    <td>
+                        <a href="@Url.Action("Editor", "Home", new { id = doc.Id })" class="btn btn-primary">Edit</a>
+                        <a href="@Url.Action("ViewDocument", "Home", new { id = doc.Id })" class="btn btn-secondary">View</a>
+                        <form method="post" asp-action="Delete" style="display:inline;">
+                            <input type="hidden" name="delete_id" value="@doc.Id" />
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this document?')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No documents available yet.</p>
+}
+
+<div>
+    <a asp-action="Upload" class="btn btn-primary">Upload New Document</a>
+</div>

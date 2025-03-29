@@ -1,0 +1,202 @@
+﻿@model WordToHtml.Models.WordToHtmlModel;
+@{
+    ViewData["Title"] = "A4Views";
+    Layout = null;
+
+}
+@*
+<style>
+
+    page {
+        background: white;
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 0.5cm;
+        box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+    }
+
+        page[size="A4"] {
+            width: 21cm;
+            height: 29.7cm;
+        }
+
+            page[size="A4"][layout="landscape"] {
+                width: 29.7cm;
+                height: 21cm;
+            }
+
+    @@media print {
+        body, page {
+            background: white;
+            margin: 0;
+            box-shadow: 0;
+        }
+</style>*@
+
+@* <link href="~/css/a4.css" rel="stylesheet">
+<style>
+    td {
+        padding: 10px !important;
+    }
+</style>
+
+
+<div id="pdfBody">
+
+    @for (int i = 0; i < 5; i++)
+    {
+        <page size="A4">
+            <table>
+                <tr style="width:100%;">
+                    <td style="width:100%;">
+                        <div style="float:left;">
+                            <p style="font-weight:bold;">Client Details : </p>
+                            <p>Supratim Saha</p>
+                            <p>Kalabagn , Ward No : 3 ,</p>
+                            <p>Cooch Behar,Pin : 76101</p>
+                        </div>
+                    </td>
+                    <td style="width:100%;">
+                        <div style="float:right;">
+                            <img alt="" src="~/logo/clientlogo.png" style="height:100px;width:auto;">
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+
+                    <td colspan="2">
+                        <hr />
+                        <div id="content">
+                            @Html.Raw(Model.HtmlContent)
+                        </div>
+                    </td>
+
+                </tr>
+                <tr style="height:200px;">
+                    <td colspan="2">
+
+                        <div>
+                            <img src="~/logo/clientlogo.png" style="height:100px;width:auto;">
+                        </div>
+
+                    </td>
+                </tr>
+            </table>
+
+        </page>
+
+    }
+
+</div>
+ *@
+
+
+<link href="~/css/A4_New.css" rel="stylesheet">
+
+<div id="pdfBody">
+    @for (int i = 0; i < 5; i++)
+    {
+        <page size="A4">
+            <div class="header">
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="width: 50%;">
+                            <div style="float: left;">
+                                <p style="font-weight: bold;">Client Details:</p>
+                                <p>Supratim Saha</p>
+                                <p>Kalabagn, Ward No: 3,</p>
+                                <p>Cooch Behar, Pin: 76101</p>
+                            </div>
+                        </td>
+                        <td style="width: 50%;">
+                            <div style="float: right;">
+                                <img alt="" src="~/logo/clientlogo.png" style="height: 75px; width: auto;">
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="content">
+                @Html.Raw(Model.HtmlContent)
+            </div>
+            <div class="footer">
+                Footer Content
+            </div>
+        </page>
+    }
+</div>
+
+@using (Html.BeginForm("PortraitAndLandscapePDF_Export", "AktivovPDF", FormMethod.Post))
+{
+    <input type="hidden" name="GridHtmlpdf" />
+    <input type="hidden" name="IsLandscape" value="Portrait" />
+
+    <button class="mdc-button mdc-button--raised" type="submit" title="Download Invoice" onclick="ExportHtmlToPdf();"> <i class="fa fa-file-pdf-o"></i> Download Invoice </button>
+}
+
+@using (Html.BeginForm("ExportToWord", "AktivovPDF", FormMethod.Post))
+{
+    <input type="hidden" name="GridHtmlWord" />
+    <button class="word_icon" type="submit" id="btnSubmitMSWord" value="ExportWord" name="Command" onclick="ExportHtmlToWord();">
+        Download Word
+    </button>
+
+}
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function ExportHtmlToPdf() {
+        var styles = "";
+        var stylePromises = [];
+
+        $("link[rel=stylesheet]").each(function () {
+            var href = $(this).attr("href");
+            stylePromises.push(
+                $.ajax({
+                    url: href,
+                    success: function (data) {
+                        styles += "<style>" + data + "</style>";
+                    },
+                    async: false
+                })
+            );
+        });
+
+        $.when.apply($, stylePromises).done(function () {
+            var bodyContent = $("#pdfBody").prop('outerHTML');
+            //var fullHtml = "< html ><head>" + styles + "< /head><body>" + bodyContent + "< /body>< /html>";
+            var fullHtml = styles + bodyContent;
+            $("input[name='GridHtmlpdf']").val(fullHtml);
+        });
+    }
+</script>
+
+<script>
+    function ExportHtmlToWord(){
+
+        var styles = "";
+        var stylePromises = [];
+
+        $("link[rel=stylesheet]").each(function () {
+            var href = $(this).attr("href");
+            stylePromises.push(
+                $.ajax({
+                    url: href,
+                    success: function (data) {
+                        styles += "<style>" + data + "</style>";
+                    },
+                    async: false
+                })
+            );
+        });
+
+        $.when.apply($, stylePromises).done(function () {
+            var bodyContent = $("#pdfBody").prop('outerHTML');
+            //var fullHtml = "< html ><head>" + styles + "< /head><body>" + bodyContent + "< /body>< /html>";
+            var fullHtml = styles + bodyContent;
+            $("input[name='GridHtmlWord']").val(fullHtml);
+        });
+    }
+</script>

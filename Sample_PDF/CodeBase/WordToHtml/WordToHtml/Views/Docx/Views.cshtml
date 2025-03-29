@@ -1,0 +1,74 @@
+﻿@model WordToHtml.Models.WordToHtmlModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A4 Page Design</title>
+    <style>
+        /* Reset some default browser styles for better print results */
+        @@page {
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .page {
+            width: 210mm;
+            height: 297mm;
+            padding: 20mm;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        header, footer {
+            text-align: center;
+        }
+
+            header h1 {
+                margin: 0;
+                font-size: 24px;
+            }
+
+        main {
+            flex-grow: 1;
+        }
+
+            main p {
+                margin: 10px 0;
+                font-size: 18px;
+            }
+
+        /* Ensure everything fits within the printable area */
+        @@media print {
+            .page {
+                width: 100%;
+                height: 100%;
+                padding: 0;
+                margin: 0;
+            }
+
+            header, footer {
+                page-break-after: avoid;
+                page-break-before: avoid;
+            }
+
+            main {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    @Html.Raw(Model.HtmlContent)
+</body>
+</html>

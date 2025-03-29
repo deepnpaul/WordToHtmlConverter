@@ -1,0 +1,167 @@
+﻿@model WordToHtml.Models.ManageSample;
+@{
+    ViewData["Title"] = "ManagePageSample";
+}
+
+<style>
+    body {
+        background: rgb(204,204,204);
+    }
+
+    .page {
+        background: white;
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 0.5cm;
+        box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+        padding: 20px;
+        position: relative;
+        width: 21cm;
+        min-height: 29.7cm; /* A4 height */
+        page-break-after: always;
+    }
+
+    .header, .footer {
+        position: relative;
+        text-align: center;
+        font-weight: bold;
+        padding: 10px;
+        border-bottom: 2px solid #000;
+    }
+
+    .footer {
+        border-top: 2px solid #000;
+        padding-top: 5px;
+        font-size: 12px;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+        .table th, .table td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+    .contentBody {
+        min-height: calc(100% - 80px);
+        padding-bottom: 20px;
+    }
+
+    /* PRINT STYLES */
+    @@media print {
+        body * {
+            visibility: hidden;
+        }
+
+        #printContainer, #printContainer * {
+            visibility: visible;
+        }
+
+        #printContainer {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            background: white;
+        }
+
+        .page {
+            box-shadow: none;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header, .footer {
+            position: relative;
+            background: white;
+            width: 100%;
+            text-align: center;
+        }
+
+        .footer {
+            border-top: 2px solid black;
+            padding-top: 5px;
+            font-size: 12px;
+        }
+
+        .page-number::after {
+            content: counter(page);
+        }
+    }
+</style>
+
+<div id="printContainer">
+    <div class="page">
+        <div class="header">
+            <div class="row">
+                <div class="col-sm-6"><h2>Employee Records</h2></div>
+                <div class="col-sm-6"><img src="https://imgd.aeplcdn.com/1056x594/n/cw/ec/192861/royalenfield-scram-440-left-side-view0.jpeg?isig=0&wm=3&q=80" alt="Girl in a jacket" width="50" height="60"></div>
+            </div>
+        </div>
+
+        <div class="contentBody">
+            <p>Employee Details</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Company Name</th>
+                        <th>Joining Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var i in ViewBag.documents)
+                    {
+                        <tr>
+                            <td>@i.ID</td>
+                            <td>@i.Name</td>
+                            <td>@i.CompanyName</td>
+                            <td>@i.JoiningDate</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <br>
+
+            <p>Employee Records</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Company Name</th>
+                        <th>Joining Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var i in ViewBag.documents)
+                    {
+                        <tr>
+                            <td>@i.Name</td>
+                            <td>@i.CompanyName</td>
+                            <td>@i.JoiningDate</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            <span>Generated on: @DateTime.Now.ToString("dd MMM yyyy HH:mm")</span> | <span class="page-number">Page 1</span>
+        </div>
+    </div>
+</div>

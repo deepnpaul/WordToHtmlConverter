@@ -1,0 +1,85 @@
+﻿@* @model WordToHtml.Models.WordToHtmlModel
+
+
+@{
+    Layout = null;
+}
+  
+<div class="container" style="padding-left: 300px; padding-right: 300px;">
+
+@Html.Raw(Model.HtmlContent)
+</div>
+
+<form asp-action="Pdf" method="post" style="display: flex; flex-direction: column; align-items: center;">
+    <input type="hidden" asp-for="HtmlContent" />
+    <button type="button"  onclick="window.print()" style=" background-color: blue;
+            padding: 7px;
+            margin-left: 5px;
+            color: wheat;
+            margin: 5px;
+            text-align: center;
+            border: none;
+            cursor: pointer;">
+        Print Page
+    </button>
+    <button type="submit" style="background-color:blue; padding:7px;  color:wheat; margin-top:5px; text-align:center; border: none; cursor: pointer;">
+        Download PDF
+    </button>
+</form> *@
+
+
+
+
+
+
+
+
+@model WordToHtml.Models.WordToHtmlModel
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Document</title>
+   <style>
+        .content-container {
+            padding-left: 387px;
+            padding-right: 387px;
+        }
+
+        @@media print {
+            .content-container {
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            .print-button, .pdf-button {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container content-container">
+        @Html.Raw(Model.HtmlContent)
+    </div>
+
+    <form asp-action="Pdf" method="post" style="display: flex; flex-direction: column; align-items: center;">
+        <input type="hidden" asp-for="HtmlContent" />
+        <button type="button" class="print-button" onclick="window.print()" style="background-color: blue; padding: 7px; color: wheat; margin: 5px; text-align: center; border: none; cursor: pointer;">
+            Print Page
+        </button>
+        <button type="submit" class="pdf-button" style="background-color: blue; padding: 7px; color: wheat; margin-top: 5px; text-align: center; border: none; cursor: pointer;">
+            Download PDF
+        </button>
+    </form>
+
+  </body>
+</html>
+
+
+

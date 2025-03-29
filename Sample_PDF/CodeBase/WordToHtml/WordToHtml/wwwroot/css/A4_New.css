@@ -1,0 +1,47 @@
+page {
+    background: white;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 0.5cm;
+    box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
+    position: relative;
+    width: 21cm; /* Default A4 width */
+    height: 29.7cm; /* Default A4 height */
+}
+
+    page[size="A4"] {
+        width: 21cm;
+        height: 29.7cm;
+    }
+
+        page[size="A4"][layout="landscape"] {
+            width: 29.7cm;
+            height: 21cm;
+        }
+
+.header, .footer {
+    width: 100%;
+    background: #f1f1f1;
+    text-align: center;
+    padding: 10px 0;
+    position: absolute;
+    left: 0;
+    box-sizing: border-box;
+}
+
+.header {
+    top: 0;
+    height: 160px;
+}
+
+.footer {
+    bottom: 0;
+    height: 60px;
+}
+
+.content {
+    padding-top: 180px;
+    padding-bottom: 70px;
+    min-height: 500px;
+    box-sizing: border-box;
+}
